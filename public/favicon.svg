@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <rect x="8" y="8" width="112" height="112" rx="28" fill="#F97316"/>
+  <text x="64" y="78"
+        text-anchor="middle"
+        font-family="Nunito, system-ui, -apple-system, Segoe UI, Roboto, Arial"
+        font-size="64"
+        font-weight="800"
+        fill="#FFFFFF">U</text>
+</svg>
