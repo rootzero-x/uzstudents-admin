@@ -847,49 +847,117 @@ function ModalBody({
     );
   }
 
-  // CHANGE PASSWORD
-  if (modal.type === "change_password") {
-    return (
-      <div className="space-y-3">
-        {err ? <ErrorBox msg={err} /> : null}
-        <Field label="New password" value={form.new_password} onChange={(v) => set("new_password", v)} />
-        <div className="flex gap-2">
-          <Button
-            className="w-full"
-            disabled={loading || !canManageSettings}
-            onClick={() => act(() => adminApi.changePassword({ new_password: form.new_password }))}
-          >
-            {loading ? "Updating..." : "Update Password"}
-          </Button>
-          <Button variant="ghost" className="w-full" onClick={close}>
-            Cancel
-          </Button>
-        </div>
-      </div>
-    );
-  }
+ // CHANGE PASSWORD
+if (modal.type === "change_password") {
+  return (
+    <div className="space-y-3">
+      {err ? <ErrorBox msg={err} /> : null}
 
-  // CHANGE 2FA
-  if (modal.type === "change_2fa") {
-    return (
-      <div className="space-y-3">
-        {err ? <ErrorBox msg={err} /> : null}
-        <Field label="New 2FA" value={form.new_twofa} onChange={(v) => set("new_twofa", v)} />
-        <div className="flex gap-2">
-          <Button
-            className="w-full"
-            disabled={loading || !canManageSettings}
-            onClick={() => act(() => adminApi.change2fa({ new_twofa: form.new_twofa }))}
-          >
-            {loading ? "Updating..." : "Update 2FA"}
-          </Button>
-          <Button variant="ghost" className="w-full" onClick={close}>
-            Cancel
-          </Button>
-        </div>
+      <Field
+        label="Current password"
+        type="password"
+        value={form.current_password}
+        onChange={(v) => set("current_password", v)}
+        placeholder="Enter current password"
+      />
+
+      <Field
+        label="New password"
+        type="password"
+        value={form.new_password}
+        onChange={(v) => set("new_password", v)}
+        placeholder="Enter new password"
+      />
+
+      <div className="flex gap-2">
+        <Button
+          className="w-full"
+          disabled={
+            loading ||
+            !canManageSettings ||
+            !String(form.current_password || "").trim() ||
+            !String(form.new_password || "").trim()
+          }
+          onClick={() =>
+            act(() =>
+              adminApi.changePassword({
+                current_password: form.current_password,
+                new_password: form.new_password,
+              })
+            )
+          }
+        >
+          {loading ? "Updating..." : "Update Password"}
+        </Button>
+
+        <Button variant="ghost" className="w-full" onClick={close}>
+          Cancel
+        </Button>
       </div>
-    );
-  }
+
+      <div className="text-[11px] text-white/50 leading-relaxed">
+        Security note: after update, all sessions will be revoked and you’ll need
+        to login again.
+      </div>
+    </div>
+  );
+}
+
+// CHANGE 2FA
+if (modal.type === "change_2fa") {
+  return (
+    <div className="space-y-3">
+      {err ? <ErrorBox msg={err} /> : null}
+
+      <Field
+        label="Current 2FA"
+        type="password"
+        value={form.current_twofa}
+        onChange={(v) => set("current_twofa", v)}
+        placeholder="Enter current 2FA code"
+      />
+
+      <Field
+        label="New 2FA"
+        type="password"
+        value={form.new_twofa}
+        onChange={(v) => set("new_twofa", v)}
+        placeholder="Enter new 2FA code"
+      />
+
+      <div className="flex gap-2">
+        <Button
+          className="w-full"
+          disabled={
+            loading ||
+            !canManageSettings ||
+            !String(form.current_twofa || "").trim() ||
+            !String(form.new_twofa || "").trim()
+          }
+          onClick={() =>
+            act(() =>
+              adminApi.change2fa({
+                current_twofa: form.current_twofa,
+                new_twofa: form.new_twofa,
+              })
+            )
+          }
+        >
+          {loading ? "Updating..." : "Update 2FA"}
+        </Button>
+
+        <Button variant="ghost" className="w-full" onClick={close}>
+          Cancel
+        </Button>
+      </div>
+
+      <div className="text-[11px] text-white/50 leading-relaxed">
+        Security note: after update, all sessions will be revoked and you’ll need
+        to login again.
+      </div>
+    </div>
+  );
+}
 
   return <div className="text-xs text-white/70">Unknown modal.</div>;
 }
