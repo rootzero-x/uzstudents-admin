@@ -119,6 +119,7 @@ export default function TwoFAForm() {
                       label="2FA Code"
                       placeholder="Enter your 2FA code"
                       value={twofa}
+                      type="password"
                       onChange={(e) => setTwofa(e.target.value)}
                     />
 
